@@ -3,7 +3,7 @@ name: Deploy Laravel Project
 on:
   push:
     branches:
-      - main  # Виконувати деплой при пуші в master
+      - main  # Виконувати деплой при пуші в main
 
 jobs:
   deploy:
@@ -21,12 +21,12 @@ jobs:
           coverage: none
 
       - name: Deploy to Server
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@main
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/myproject
-            git pull origin master
+            git pull origin main
             systemctl restart nginx
