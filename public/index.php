@@ -1,2 +1,2 @@
 <?php
-echo 'TESTTTT!!!';
+echo "HELLO WORKING CI";
