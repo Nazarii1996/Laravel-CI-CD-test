@@ -20,12 +20,6 @@ jobs:
           extensions: mbstring, bcmath, pdo, pdo_mysql, intl
           coverage: none
 
-      - name: Install Dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader
-
-      - name: Run Migrations
-        run: php artisan migrate --force
-
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
