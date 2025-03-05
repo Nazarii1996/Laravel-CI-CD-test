@@ -35,9 +35,4 @@ jobs:
           script: |
             cd /var/www/myproject
             git pull origin master
-            composer install --no-dev --prefer-dist
-            php artisan migrate --force
-            php artisan config:cache
-            php artisan route:cache
-            php artisan queue:restart
             systemctl restart nginx
