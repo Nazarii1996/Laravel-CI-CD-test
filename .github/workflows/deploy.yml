@@ -3,7 +3,7 @@ name: Deploy Laravel Project
 on:
   push:
     branches:
-      - master  # Виконувати деплой при пуші в master
+      - main  # Виконувати деплой при пуші в master
 
 jobs:
   deploy:
