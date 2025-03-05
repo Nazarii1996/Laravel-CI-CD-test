@@ -1,0 +1,43 @@
+name: Deploy Laravel Project
+
+on:
+  push:
+    branches:
+      - master  # Виконувати деплой при пуші в master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, pdo, pdo_mysql, intl
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer install --no-dev --prefer-dist --optimize-autoloader
+
+      - name: Run Migrations
+        run: php artisan migrate --force
+
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/myproject
+            git pull origin master
+            composer install --no-dev --prefer-dist
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan queue:restart
+            systemctl restart nginx
